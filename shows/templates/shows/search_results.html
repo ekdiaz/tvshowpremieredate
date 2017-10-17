@@ -1,0 +1,121 @@
+<!--Search results page-->
+
+<!--Setup-->
+{% load static %}
+<link href='https://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'shows/style.css' %}" />
+<head>
+    <link rel="icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <title>Search</title>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<header><h1>tvshowpremieredate</h1></header>
+<img src="https://tvshowpremieredate.pythonanywhere.com/menu.png" type="image/png" class="menu" id="menu">
+<a href="https://tvshowpremieredate.pythonanywhere.com/home" class="button menu-list" id="home">HOME</a>
+<a href="https://tvshowpremieredate.pythonanywhere.com/unsubscribe" class="button menu-list" id="unsubscribe">UNSUBSCRIBE</a>
+<a href="https://tvshowpremieredate.pythonanywhere.com/logout" class="button menu-list" id="log-out">LOG OUT</a>
+
+<!--Rotating menu button for small screens-->
+<script>
+    var menu = document.getElementById("menu");
+    var home = document.getElementById("home");
+    var unsubscribe = document.getElementById("unsubscribe");
+    var logout = document.getElementById("log-out");
+    menu.onclick = function() {
+        if (home.style.display != "block")
+        {
+            // show buttons
+            home.style.display = "block";
+            unsubscribe.style.display = "block";
+            logout.style.display = "block";
+            // rotate menu icon
+            menu.style.transform = "rotate(90deg)";
+            menu.style.transition = "all .12s";
+        }
+        else
+        {
+            //hide buttons
+            home.style.display = "none";
+            unsubscribe.style.display = "none";
+            logout.style.display = "none";
+            //rotate menu icon back
+            menu.style.transform = "rotate(0deg)";
+            menu.style.transition = "all .12s";
+        }
+}
+</script>
+
+<!--Content-->
+<div id="box">
+<!--Enable user to search again-->
+<form action="https://tvshowpremieredate.pythonanywhere.com/home/search" method="get">
+    Not what you wanted? Add different TV shows:
+    <input type="text" name="search" class="textbox">
+    <input type="submit" value="SEARCH" class="button">
+</form>
+<meta charset=utf-8>
+
+<!--Display messages-->
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<!--Display tv show results in form-->
+<form action="sub_to_shows/" method="post">{% csrf_token %}
+<input type=submit value="SUBSCRIBE" class="button">
+{% block js %}
+    <script type="text/javascript">
+    // Results are in form [u'abc', u'de', ...]
+    // So parse by splitting with ', u'
+    var results = "{{ results|escapejs }}";
+    var w = results.slice(3, results.length - 2);
+    var words = w.split(/\', u\'|\", u\"|\', u\"|\", u\'/);
+
+    // ids are in form [###, ##, ####, ...]
+    // so get rid of brackets and split by comma space or bracket
+    var i ="{{ ids|escapejs }}";
+    var i2 = i.slice(1, results.length - 2);
+    var ids = i2.split(/, |]/);
+
+    // images_1 and images_2 are parsed the same as ids
+    var imgs_1 ="{{ images_1|escapejs }}";
+    var imgs_1_2 = imgs_1.slice(1, results.length - 2);
+    var images_1 = imgs_1_2.split(/, |]/);
+
+    var imgs_2 ="{{ images_2|escapejs }}";
+    var imgs_2_2 = imgs_2.slice(1, results.length - 2);
+    var images_2 = imgs_2_2.split(/, |]/);
+
+    // Create a table with checkboxes
+    document.writeln("<table>");
+    for(var i = 0; i < words.length; i++)
+    {
+        word = words[i];
+        // Enable special characters by parsing and changing HTML special characters
+        // to their JS equivalent.
+        word = decodeURIComponent(JSON.parse('"' + word.replace(/\"/g, '\\"') + '"'));
+        document.writeln("<tr>");
+        // Set the checkbox with an id the same as the show id
+        document.writeln("<td><input type=\"checkbox\" name=\"show\" id=\"" + ids[i] + "\" value=\"" + ids[i] + "\" style=\"float: left;\">");
+
+        // Set the image
+        var image = "https://static.tvmaze.com/uploads/images/medium_portrait/" + images_1[i] + "/" + images_2[i] + ".jpg";
+        // Set label as the show name
+        document.writeln("<label for=\"" + ids[i] + "\">" + word + "</label></td>");
+        document.writeln("<td><img src=" + image + " alt=\"No image available\" class=\"image\";\"></td>")
+        document.writeln("</tr>");
+    }
+    document.writeln("</table>");
+    </script>
+{% endblock js %}
+<input type=submit value="SUBSCRIBE" class="button">
+</form>
+</div>
+<a href="https://tvshowpremieredate.pythonanywhere.com/home" class="button">HOME</a>
+<a href="https://tvshowpremieredate.pythonanywhere.com/unsubscribe" class="button">UNSUBSCRIBE</a>
+<a href="https://tvshowpremieredate.pythonanywhere.com/logout" class="button">LOG OUT</a>
+<p>Created by Erica Diaz. </p><p>Questions? Email tvshowpremieredate@gmail.com</p>

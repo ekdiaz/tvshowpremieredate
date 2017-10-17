@@ -1,0 +1,192 @@
+body {
+    font-family: 'Josefin Sans';
+    display: table-cell;
+    vertical-align: middle;
+    /*background: url("images/pink_rice.png") right bottom;*/
+    background-color: #9addfc;
+    color: #08051d;
+    font-size: 150%;
+}
+
+h1 {
+    font-weight: normal;
+    font-family: 'Josefin Sans';
+}
+
+h3 {
+    font-weight: bold;
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+li.show_name, label{
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.textbox {
+    border-radius:6px;
+    border-width: 0px 0px 0px;
+    width:200px;
+	padding:6px 6px 6px 6px;
+	margin:3px;
+	background-color: #9addfc;
+	border-color: #9addfc;
+	color: #FFFFFF;
+	font-family: 'Josefin Sans';
+	font-size: 110%;
+}
+
+#box {
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 6px;
+    padding: 10px 20px 9px;
+    margin: 2px 2px 2px 2px;
+    font-weight: bold;
+}
+
+.button {
+    border-style: solid;
+    color: #FFFFFF;
+    border-color: #3381ed;
+    border-width: 1px 1px 1px;
+    background-color: #3d93f6;
+    border-radius: 6px;
+    display: inline-block;
+    font-style: normal;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    font-weight: normal;
+    padding: 10px 20px 9px;
+    font-size: 16px;
+    font-family: 'Josefin Sans';
+    cursor: pointer;
+    transition: all .12s;
+    -webkit-appearance: none;
+}
+
+
+input[type="checkbox"]:hover + label:hover{
+    background-image: url("images/checkbox-hover4.png");
+    background-size: 24px 24px;
+    background-position: top left;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    transition: all .12s;
+}
+
+
+.button:hover {
+    background-color: #084fa2;
+    border-color: #07468f;
+    transition: all .12s;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"] + label {
+    display: inline-block;
+    position: relative;
+    padding-left: 35px;
+    color: #08051d;
+    cursor: pointer;
+}
+
+input[type="checkbox"] + label:before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #08051d;
+    position: absolute;
+    border-radius: 4px;
+    background:transparent;
+    left: 0;
+    top: 0;
+    -webkit-transition: all .12s, border-color .08s;
+    transition: all .12s, border-color .08s;
+}
+
+
+
+input[type="checkbox"]:checked + label:before {
+    width: 10px;
+    top: -5px;
+    left: 5px;
+    border-radius: 0;
+    opacity: 1;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.image {
+    width:104px;
+    height:147px;
+}
+
+@media screen and (max-width: 480px) {
+  /* comes into effect for screens less than or equal to 480 pixels */
+    h1 {
+        font-size: 140%;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    body {
+        font-size: 120%;
+        margin-bottom: 10px;
+    }
+    p {
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+    #box {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    /*.menu-list {*/
+    /*    display: none;*/
+    /*}*/
+    .menu {
+        margin-left: 10px;
+        margin-bottom: 5px;
+        width: 32px;
+        height: 32px;
+    }
+    .button {
+        margin-left: 10px;
+    }
+    #unsubscribe, #log-out, #home {
+        display: none;
+        border-radius: 0px;
+        margin-left: 0px;
+    }
+    li.show_name, label{
+        font-size: 120%;
+        font-weight: bold;
+    }
+
+}
+
+@media screen and (min-width: 481px) {
+  /* comes into effect for screens larger than or equal to 481 pixels */
+    h1 {
+        font-size: 150%;
+    }
+    .menu {
+        display: none;
+    }
+    /*#unsubscribe, #log-out {*/
+    /*    display: none;*/
+    /*    border-radius: 0px;*/
+    /*    margin-left: 0px;*/
+    /*}*/
+}

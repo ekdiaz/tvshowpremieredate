@@ -1,0 +1,32 @@
+<!--Login or signup page-->
+<!--Setup-->
+{% load static %}
+<link href='https://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'shows/style.css' %}" />
+<head>
+    <link rel="icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <title>Home</title>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<header><h1>tvshowpremieredate</h1></header>
+
+<!--Content-->
+<div id="box">
+<!--Display messages-->
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<!--Main content-->
+<p>Welcome to tvshowpremieredate! Subscribe to TV shows and get emails as soon
+as we know the date of the season premiere and a reminder email a week before!</p>
+<a href="https://tvshowpremieredate.pythonanywhere.com/login" class="button">LOG IN</a>
+<a href="https://tvshowpremieredate.pythonanywhere.com/signup" class="button">SIGN UP</a><br>
+</div>
+
+<p>Created by Erica Diaz. </p><p>Questions? Email tvshowpremieredate@gmail.com</p>

@@ -1,0 +1,148 @@
+<!--Homepage-->
+
+<!--Setup-->
+{% load static %}
+{% load tz %}
+<link href='https://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+<head>
+    <link rel="icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <title>Home</title>
+</head>
+<link rel="stylesheet" type="text/css" href="{% static 'shows/style.css' %}" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<header><h1>tvshowpremieredate</h1></header>
+<img src="https://tvshowpremieredate.pythonanywhere.com/menu.png" type="image/png" class="menu" id="menu">
+<a href="https://tvshowpremieredate.pythonanywhere.com/unsubscribe" class="button menu-list" id="unsubscribe">UNSUBSCRIBE</a>
+<a href="https://tvshowpremieredate.pythonanywhere.com/logout" class="button menu-list" id="log-out">LOG OUT</a>
+
+<!--Displays the rotating menu button on small screens-->
+<script>
+    var menu = document.getElementById("menu");
+    var unsubscribe = document.getElementById("unsubscribe");
+    var logout = document.getElementById("log-out");
+    menu.onclick = function() {
+        if (unsubscribe.style.display != "block")
+        {
+            // show buttons
+            unsubscribe.style.display = "block";
+            logout.style.display = "block";
+            // rotate menu icon
+            menu.style.transform = "rotate(90deg)";
+            menu.style.transition = "all .12s";
+        }
+        else
+        {
+            //hide buttons
+            unsubscribe.style.display = "none";
+            logout.style.display = "none";
+            //rotate menu icon back
+            menu.style.transform = "rotate(0deg)";
+            menu.style.transition = "all .12s";
+        }
+}
+</script>
+<!--Main content-->
+<div id="box">
+    <!--Display all messages-->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!--Search form-->
+    <form action="https://tvshowpremieredate.pythonanywhere.com/home/search" method="get">
+        Add TV Shows:
+        <input type="text" name="search" class="textbox">
+        <input type="submit" value="SEARCH" class="button">
+    </form>
+
+    <!--Display current subscriptions and known premiere dates-->
+    <h3>Current Subscriptions:</h3>
+    <!--Get timezone-->
+    <p id="tzone"></p>
+    <script>
+        var tzone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        document.getElementById("tzone").innerHTML = "The following airtimes are in timezone " + tzone + ".";
+    </script>
+    <!--Display subscriptions in alphabetical order-->
+    <table><ul>
+    {% for result in results|dictsort:"show" %}
+        <tr>
+            <td>
+                <li class="show_name">
+                    {{ result.show }}
+                </li>
+                <li class="date">
+                    {% if result.date is not None %}
+                        <!--Parsing date and converting timezone-->
+                        <script>
+                            var d = "{{ result.date|escapejs }}";
+                            // date is in ISO format
+                            var year = parseInt(d.substring(0, 4));
+                            var month = parseInt(d.substring(5, 7));
+                            var day = parseInt(d.substring(8, 10));
+                            var hour = parseInt(d.substring(11, 13));
+                            var minute = parseInt(d.substring(14, 16));
+                            var offset_hours = parseInt(d.substring(20, 22));
+                            var offset_minutes = parseInt(d.substring(23, 25));
+
+                            // Convert timezone
+                            if (d.substring(19, 20) == "+")
+                            {
+                            	date = new Date(year, month - 1, day, hour + offset_hours, minute + offset_minutes);
+                            }
+                            else
+                            {
+                            	date = new Date(year, month - 1, day, hour - offset_hours, minute - offset_minutes);
+                            }
+                            var n = date.getTimezoneOffset();
+                            date.setMinutes(date.getMinutes() - n);
+                            var dateNow = new Date();
+
+                            // Only display if date is after today
+                            if (date > dateNow)
+                            {
+                                var month2 = date.getMonth() + 1;
+                                var year2 = date.getFullYear();
+                                var number2 = date.getDate();
+                                var hour2 = date.getHours();
+                                var minute2 = date.getMinutes();
+                                var lst = [month2, number2, hour2, minute2];
+                                // Add zeroes to numbers less than 10
+                                for(var i = 0; i < lst.length; i++)
+                                {
+                                    if (lst[i] < 10)
+                                    {
+                                        lst[i] = "0" + lst[i].toString();
+                                    }
+                                }
+                                document.writeln("Next Season Premiere: " + lst[0] + "/" + lst[1] + "/" + year2 + ", " + lst[2] + ":" + lst[3]);
+                            }
+                            // If date is before today then display Unknown.
+                            else
+                            {
+                                document.writeln("Next Season Premiere: Unknown");
+                            }
+                        </script>
+                    <!--Display unknown if the date isn't known-->
+                    {% else %}
+                        Next Season Premiere: Unknown
+                    {% endif %}
+                </li>
+            </td>
+            <!--Display show's image-->
+            <td align="right">
+                <img src="{{ result.image }}" alt="No image available" class="image">
+            </td>
+        </tr>
+    {% endfor %}
+    </ul></table>
+    <p>Thanks to TVMaze API for making this possible!</p>
+</div>
+<a href="https://tvshowpremieredate.pythonanywhere.com/unsubscribe" class="button">UNSUBSCRIBE</a>
+<a href="https://tvshowpremieredate.pythonanywhere.com/logout" class="button">LOG OUT</a>
+<p>Created by Erica Diaz. </p><p>Questions? Email tvshowpremieredate@gmail.com</p>

@@ -1,0 +1,83 @@
+<!--Signup page-->
+<!--Setup-->
+{% load static %}
+<link href='https://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'shows/style.css' %}" />
+<head>
+    <link rel="icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <title>Sign Up</title>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<header><h1>tvshowpremieredate</h1></header>
+<img src="https://tvshowpremieredate.pythonanywhere.com/menu.png" type="image/png" class="menu" id="menu">
+<a href="https://tvshowpremieredate.pythonanywhere.com/home" class="button menu-list" id="home">HOME</a>
+
+<!--Display rotating menu button for small screens-->
+<script>
+    var menu = document.getElementById("menu");
+    var home = document.getElementById("home");
+
+    menu.onclick = function() {
+        if (home.style.display != "block")
+        {
+            // show buttons
+            home.style.display = "block";
+            // rotate menu icon
+            menu.style.transform = "rotate(90deg)";
+            menu.style.transition = "all .12s";
+        }
+        else
+        {
+            //hide buttons
+            home.style.display = "none";
+            //rotate menu icon back
+            menu.style.transform = "rotate(0deg)";
+            menu.style.transition = "all .12s";
+        }
+}
+</script>
+<div id="box">
+<!--Display signup form-->
+{% block content %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <strong>{{ error|escape }}</strong>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <strong>{{ error|escape }}</strong>
+    {% endfor %}
+    <form method="post">
+    {% csrf_token %}
+    <p>
+        <label for="username">USERNAME:</label>
+        <input id="username" type="text" name="username" class="textbox"/>
+        Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+    </p>
+    <p>
+        <label for="email">EMAIL:</label>
+        <input id="email" type="email" name="email" class="textbox"/>
+        Required.
+    </p>
+    <p>
+        <label for="password1">PASSWORD:</label>
+        <input id="password1" type="password" name="password1" class="textbox"/>
+        Required.
+    </p>
+    <ul>
+        <li>Your password can't be too similar to your other personal information.</li>
+        <li>Your password must contain at least 8 characters.</li>
+        <li>Your password can't be a commonly used password.</li>
+        <li>Your password can't be entirely numeric.</li>
+    </ul>
+    <p>
+        <label for="password2">PASSWORD CONFIRMATION:</label>
+        <input id="password2" type="password" name="password2" class="textbox"/>
+        Enter the same password as before, for verification.
+    </p>
+    <button type="submit" class="button">Sign up</button>
+  </form>
+{% endblock %}
+</div>
+<p>Created by Erica Diaz. </p><p>Questions? Email tvshowpremieredate@gmail.com</p>

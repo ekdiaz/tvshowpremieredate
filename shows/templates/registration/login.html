@@ -1,0 +1,74 @@
+<!--Login page-->
+<!--Setup-->
+{% load static %}
+<link href='https://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'shows/style.css' %}" />
+<head>
+    <link rel="icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://tvshowpremieredate.pythonanywhere.com/favicon.png" type="image/png">
+    <title>Log In</title>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<header><h1>tvshowpremieredate</h1></header>
+<img src="https://tvshowpremieredate.pythonanywhere.com/menu.png" type="image/png" class="menu" id="menu">
+<a href="https://tvshowpremieredate.pythonanywhere.com/home" class="button menu-list" id="home">HOME</a>
+
+<!--Display rotating menu button for smaller screens-->
+<script>
+    var menu = document.getElementById("menu");
+    var home = document.getElementById("home");
+    menu.onclick = function() {
+        if (home.style.display != "block")
+        {
+            // show buttons
+            home.style.display = "block";
+            // rotate menu icon
+            menu.style.transform = "rotate(90deg)";
+            menu.style.transition = "all .12s";
+        }
+        else
+        {
+            //hide buttons
+            home.style.display = "none";
+            //rotate menu icon back
+            menu.style.transform = "rotate(0deg)";
+            menu.style.transition = "all .12s";
+        }
+}
+</script>
+<!--Display errors and messages-->
+<div id="box">
+{% for field in form %}
+    {% for error in field.errors %}
+        <strong>{{ error|escape }}</strong>
+    {% endfor %}
+{% endfor %}
+{% for error in form.non_field_errors %}
+    <strong>{{ error|escape }}</strong>
+{% endfor %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% block content %}
+<!--Display form for messages-->
+    <form method="post">
+    {% csrf_token %}
+    <p>
+        <label for="username">USERNAME:</label>
+        <input id="username" type="text" name="username" class="textbox" required/>
+    </p>
+    <p>
+        <label for="password">PASSWORD:</label>
+        <input id="password" type="password" name="password" class="textbox" required/>
+    </p>
+    <button type="submit" class="button">LOG IN</button>
+    </form>
+{% endblock %}
+</div>
+<a href="https://tvshowpremieredate.pythonanywhere.com/home" class="button">HOME</a><br>
+<a href="https://tvshowpremieredate.pythonanywhere.com/password_reset" class="button">FORGOT YOUR PASSWORD?</a>
+<p>Created by Erica Diaz. </p><p>Questions? Email tvshowpremieredate@gmail.com</p>

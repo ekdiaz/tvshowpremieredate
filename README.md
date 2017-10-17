@@ -1,5 +1,6 @@
 # tvshowpremieredate
-Email notification website for TV show premieres
+Email notification website for TV show premieres.
+https://tvshowpremieredate.pythonanywhere.com
 
 TVShowPremiereDate emails out notifications as soon as a tv show's
 premiere date is known, thus ending the need for incessantly checking
